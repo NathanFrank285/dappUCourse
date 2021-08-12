@@ -8,7 +8,11 @@ require('chai')
   .use(require('chai-as-promised'))
   .should()
 
-contract('TokenFarm', (accounts)=>{
+function tokens(amount) {
+  return web3.utils.toWei(amount, "Ether");
+}
+
+contract('TokenFarm', ([owner, investor])=>{
   let daiToken, dappToken, tokenFarm
 
   before(async ()=> {
@@ -18,7 +22,10 @@ contract('TokenFarm', (accounts)=>{
     tokenFarm = await TokenFarm.new(dappToken.address, daiToken.address)
 
     // Transfer all of teh Dapp tokens into the token farm
-    await dappToken.transfer(tokenFarm.address, "1000000000000000000000000");
+    await dappToken.transfer(tokenFarm.address, tokens('1000000'));
+
+    // Send tokens to the investor, in the test we have to tell the function who is calling this function, which is accounts[0]
+    await daiToken.transfer(investor, tokens('100'), {from: owner})
 
   })
 
@@ -26,6 +33,13 @@ contract('TokenFarm', (accounts)=>{
     it('has a name', async ()=>{
       const name = await daiToken.name()
       assert.equal(name, 'Mock DAI Token')
+    })
+  })
+
+  describe('Dapp Token Deployment', async () => {
+    it('has a name', async ()=>{
+      const name = await dappToken.name()
+      assert.equal(name, 'DApp Token')
     })
   })
   })
