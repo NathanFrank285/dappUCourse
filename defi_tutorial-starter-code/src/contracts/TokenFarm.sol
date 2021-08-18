@@ -7,7 +7,10 @@ contract TokenFarm {
     string public name = "Dapp Token Farm";
     DappToken public dappToken;
     DaiToken public daiToken;
+
+    address[] public stakers;
     mapping (address => uint) public stakingBalance;
+    mapping (address => bool) public hasStaked;
 
     constructor(DappToken _dappToken, DaiToken _daiToken) public {
         dappToken = _dappToken;
@@ -21,7 +24,12 @@ contract TokenFarm {
 
         // update staking balance
         stakingBalance[msg.sender] = stakingBalance[msg.sender] + _amount;
-        
+
+        // Add user to stakers array *only* if they havent staked already
+        if(!hasStaked[msg.sender]){
+            stakers.push(msg.sender);
+        }
+
     }
 
     // 2. Unstake tokens, take money from the app, withdraw
