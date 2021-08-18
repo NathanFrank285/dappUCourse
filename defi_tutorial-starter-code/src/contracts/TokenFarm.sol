@@ -11,6 +11,7 @@ contract TokenFarm {
     address[] public stakers;
     mapping (address => uint) public stakingBalance;
     mapping (address => bool) public hasStaked;
+    mapping (address => bool) public isStaking;
 
     constructor(DappToken _dappToken, DaiToken _daiToken) public {
         dappToken = _dappToken;
@@ -30,6 +31,9 @@ contract TokenFarm {
             stakers.push(msg.sender);
         }
 
+        // update the staking status
+        hasStaked[msg.sender] = true;
+        isStaking[msg.sender] = true;
     }
 
     // 2. Unstake tokens, take money from the app, withdraw
