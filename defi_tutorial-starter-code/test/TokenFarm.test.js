@@ -46,7 +46,7 @@ contract('TokenFarm', ([owner, investor])=>{
   describe('Token Farm Deployment', async () => {
     it('has a name', async ()=>{
       const name = await dappToken.name()
-      assert.equal(name, 'DApp Token Farm')
+      assert.equal(name, 'DApp Token')
     })
 
     it('contract has tokens', async ()=>{
@@ -59,7 +59,7 @@ contract('TokenFarm', ([owner, investor])=>{
   describe('contract has tokens', async () => {
     it('has a name', async ()=>{
       const name = await dappToken.name()
-      assert.equal(name, 'DApp Token Farm')
+      assert.equal(name, 'DApp Token')
     })
   })
 
