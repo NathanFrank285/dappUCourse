@@ -5,9 +5,9 @@ import "./DappToken.sol";
 
 contract TokenFarm {
     string public name = "Dapp Token Farm";
+    address public owner;
     DappToken public dappToken;
     DaiToken public daiToken;
-    address public owner;
 
     address[] public stakers;
     mapping (address => uint) public stakingBalance;
@@ -21,7 +21,7 @@ contract TokenFarm {
     }
 
     modifier onlyOwner() {
-        require(msg.sender == owner);
+        require(msg.sender == owner, 'caller must be the owner');
         _;
     }
 
@@ -51,6 +51,8 @@ contract TokenFarm {
 
     // Issuing tokens, earn interest from staking
     function issueTokens() public  onlyOwner {
+
+        // issue dappTokens to all stakers
         for (uint i = 0; i < stakers.length; i++) {
             address recipient = stakers[i];
             // find how many token the user has deposisted
