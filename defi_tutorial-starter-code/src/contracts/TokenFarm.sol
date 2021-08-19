@@ -7,6 +7,7 @@ contract TokenFarm {
     string public name = "Dapp Token Farm";
     DappToken public dappToken;
     DaiToken public daiToken;
+    address public owner;
 
     address[] public stakers;
     mapping (address => uint) public stakingBalance;
@@ -16,10 +17,19 @@ contract TokenFarm {
     constructor(DappToken _dappToken, DaiToken _daiToken) public {
         dappToken = _dappToken;
         daiToken = _daiToken;
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner);
+        _;
     }
 
     // 1. Stake tokens, put money into the app, deposit
     function stakeTokens(uint _amount) public {
+        require(_amount > 0, 'amount must be more than 0');
+
+
         // transfer mock dai to this contract for staking
         daiToken.transferFrom(msg.sender, address(this), _amount);
 
@@ -36,10 +46,23 @@ contract TokenFarm {
         isStaking[msg.sender] = true;
     }
 
-    // 2. Unstake tokens, take money from the app, withdraw
+    // Unstake tokens, take money from the app, withdraw
 
 
-    // 3. Issuing tokens, earn interest from staking
+    // Issuing tokens, earn interest from staking
+    function issueTokens() public  onlyOwner {
+        for (uint i = 0; i < stakers.length; i++) {
+            address recipient = stakers[i];
+            // find how many token the user has deposisted
+            uint balance = stakingBalance[recipient];
+
+            // use a 1 to 1 stakers
+            if (balance > 0){
+                dappToken.transfer(recipient, balance);
+            }
+        }
+    }
+
 
 
 }
