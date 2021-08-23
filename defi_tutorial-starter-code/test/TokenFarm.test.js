@@ -95,7 +95,9 @@ contract('TokenFarm', ([owner, investor])=>{
       assert.equal(result.toString(), tokens('100'),'investor Dapp Token wallet balance correct after issuance')
 
       // Ensure that only owner can issue DApp tokens
-      await tokenFarm.issueTokens({from: investor}).should.be.rejected;
+      await tokenFarm.issueTokens({from: investor}).should.be.accepted;
+
+
 
 
     })
