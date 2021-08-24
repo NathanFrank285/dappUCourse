@@ -100,7 +100,7 @@ contract('TokenFarm', ([owner, investor])=>{
       //unstake tokens
       await tokenFarm.unstakeTokens({from: investor})
 
-      // check tokenFarm balance for the investor
+      // check results after unstaking
       result = await daiToken.balanceOf(investor)
       assert.equal(result.toString(), tokens('100'), 'investor Mock Dai wallet balance correct after staking')
 
@@ -109,6 +109,9 @@ contract('TokenFarm', ([owner, investor])=>{
 
       result = await tokenFarm.stakingBalance(investor)
       assert.equal(result.toString(), tokens('0'), 'investor staking balance correct after staking')
+
+      result = await tokenFarm.isStaking(investor)
+      assert.equal(result.toString(), 'false', 'investor staking status correct after staking')
 
     })
 

@@ -65,7 +65,7 @@ contract TokenFarm {
 
     // }
 
-    function unstakeTokens(uint _amount) public {
+    function unstakeTokens() public {
         // fetch staking balance from the contract
         uint balance = stakingBalance[msg.sender];
 
