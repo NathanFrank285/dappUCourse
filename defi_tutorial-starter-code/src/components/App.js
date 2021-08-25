@@ -1,8 +1,20 @@
 import React, { Component } from 'react'
 import Navbar from './Navbar'
+import Web3 from 'web3'
 import './App.css'
 
 class App extends Component {
+
+  async componentWillMount(){
+    await this.loadWeb3()
+    await this.loadBlockchainData()
+  }
+
+  async loadBlockchainData() {
+    const web3 = window.web3
+    const accounts = await web3.eth.getAccounts()
+    this.setState({account: accounts[0]})
+  }
 
   async loadWeb3() {
     if (window.ethereum) {
